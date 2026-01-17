@@ -65,14 +65,18 @@ FedPACE demonstrates consistent improvements over the **Fed-GGA** baseline and s
 ## 📂 Repository Structure
 
 ```text
-├── src/
-│   ├── data.py             # Data partitioning (Dirichlet CIFAR & Domain-based PACS)
-│   ├── models.py           # Model architectures (SmallCNN for CIFAR, ResNet for PACS)
-│   ├── client.py           # FedClient implementation (Local training & evaluation)
-│   ├── server.py           # FedGGAServer (The 3-stage FedPACE logic)
-│   └── utils.py            # Reproducibility seeds and logging utilities
-├── main.py                 # Unified experiment entry point (CIFAR & PACS)
-└── README.md
+├── src/                        # Core FedPACE Library
+│   ├── __init__.py
+│   ├── models.py               # Architectures (ResNet, SmallCNN) & Layer helpers
+│   ├── data.py                 # Dirichlet partitioning (CIFAR) & PACS domain loaders
+│   ├── fed_core.py             # Base Server & Client communication logic
+│   ├── strategies.py           # Logic for Conflict Dampening & Sign-based Pruning
+│   ├── annealing.py            # GGA implementation & Perturbation utilities
+│   └── utils.py                # Reproducibility math, metrics, & logging helpers
+├── docs/                       # Project Documentation
+│   └── Technical_Research_Report.pdf  # Full research paper & mathematical derivations
+├── main.py                     # Entry point (Unified orchestration of experiments)
+└── README.md                   # Project documentation
 ```
 
 ---
@@ -81,3 +85,13 @@ FedPACE demonstrates consistent improvements over the **Fed-GGA** baseline and s
 * **Abdul Samad:** Lead for FedPACE formulation (see detailed [My Contributions] section).
 * **Rumaan Mujtaba:** Contribution to pruning logic and visualization of gradient similarities.
 * **Muhammad Hamza Habib:** Contribution to dampening logic, assisted in visualization of PACS results, and technical report synthesis.
+
+---
+
+## 📄 Reference
+
+The research work and detailed metrics are documented in our [📄 Research Paper]([https://drive.google.com/file/d/1Wd3XG6fHDl-yBEn3aD0zdOTIIwyOs5mZ/view](https://github.com/ASamad73/Federated-Perturbed-Annealing-Conflict-Elimination/blob/main/docs/Technical_Research_Report.pdf)).
+
+---
+
+⭐️ If you find this research useful, please consider giving the repository a star!
