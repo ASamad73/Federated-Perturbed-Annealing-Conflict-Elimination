@@ -1,4 +1,6 @@
-# 🌐 FedPACE: Federated Perturbed Annealing and Conflict Elimination 🧬
+<h1 align="center">
+  🌐 FedPACE: Federated Perturbed Annealing and <br> Conflict Elimination 🧬
+</h1>
 
 <p align="center">
   <b>A Unified 3-Stage Framework for Robust Federated Learning under Data Heterogeneity</b><br>
