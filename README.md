@@ -90,7 +90,7 @@ FedPACE demonstrates consistent improvements over the **Fed-GGA** baseline and s
 
 ## 📄 Reference
 
-The research work and detailed metrics are documented in our [📄 Research Paper]([https://drive.google.com/file/d/1Wd3XG6fHDl-yBEn3aD0zdOTIIwyOs5mZ/view](https://github.com/ASamad73/Federated-Perturbed-Annealing-Conflict-Elimination/blob/main/docs/Technical_Research_Report.pdf)).
+The research work and detailed metrics are documented in our [📄 Research Paper](./docs/Technical_Research_Report.pdf).
 
 ---
 
