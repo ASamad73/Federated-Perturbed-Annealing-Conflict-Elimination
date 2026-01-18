@@ -155,43 +155,111 @@ This pipeline aims to *preserve beneficial client specialization* while filterin
 
 ---
 
-## Method overview — formulas & algorithm
+## 🧠 Method Overview — Formulas & Algorithm
 
-### Notation
-- \(N\): number of selected clients per round  
-- \(g_i\): gradient vector from client \(i\) (flattened)  
-- \(g_{\text{avg}} = \frac{1}{N}\sum_{i=1}^N g_i\) (element-wise average)  
-- \(W_j\): agreement score for parameter index \(j\) in \([0,1]\)  
-- \(\eta\): global learning rate
+FedPACE is a **three-stage federated optimization pipeline** designed to bias learning toward *inter-client agreement* and suppress parameters that consistently encode spurious, domain-specific features. The method operates over a fixed training horizon and transitions through annealing, dampening, and pruning phases.
 
-### 1) Federated Gradient-Guided Annealing (Fed-GGA) — sampling & selection
-At rounds \(r \in [R_s, R_e]\), the server samples \(K\) small perturbations \(\Delta_k \sim U(-\rho,\rho)\) and evaluates the resulting client gradient cosine similarity and loss. The selected perturbation must meet both a similarity gain and loss-relaxation constraint:
+Overall training schedule:
 
-Select perturbation \(k\) if
-\[
-(\text{sim}_k > \text{sim} + \beta)\ \wedge\ (L_k - L < \delta)
-\]
-where `sim` is baseline average cosine similarity and \(L\) is baseline loss. This biases early optimization toward parameter neighborhoods with higher alignment.
+FedAvg rounds → Annealing → FedAvg rounds → Dampening → Pruning
 
-(See **Algorithm 1** in the [Research Paper](./docs/Technical_Research_Report.pdf) for the full loop.)
+---
 
-### 2) Sign-Agreement dampening — per-parameter score
-Compute the element-wise agreement score using gradient **signs**:
-\[
-W_j = \frac{\left|\sum_{i=1}^N \operatorname{sign}(g_i)_j\right|}{N}\quad\in [0,1]
-\]
-Use \(W_j\) to modulate the aggregated update:
-\[
-\theta_{\text{new}} = \theta_{\text{old}} - \eta\,(g_{\text{avg}}\odot W)
-\]
-Intuition: \(W_j \approx 1\) → full update (high agreement); \(W_j \approx 0\) → suppressed update.
+### 1️⃣ Federated Gradient-Guided Annealing (Fed-GGA)
 
-### 3) Sign-Disagreement pruning — late filtering
-In final rounds (pruning window), any parameter \(j\) with sustained agreement \(W_j < t_p\) is zeroed out:
-\[
-\theta_j \leftarrow 0 \quad\text{if } W_j < t_p
-\]
-This permanently removes parameters that consistently conflict.
+**Objective:**  
+Bias early optimization toward parameter neighborhoods where client gradients exhibit higher directional agreement, while avoiding large degradation in training loss.
+
+**Procedure:**
+At rounds `r ∈ [R_s, R_e]`, the server samples `K` small perturbations:
+
+`Δ_k ~ Uniform(-ρ, ρ)`
+
+For each perturbation `k`, the server evaluates:
+- `sim_k`: average pairwise cosine similarity between client gradients
+- `L_k`: aggregated training loss after applying `Δ_k`
+
+Let:
+- `sim` = baseline average cosine similarity
+- `L`   = baseline loss (without perturbation)
+
+**Selection rule:**
+
+Select perturbation `k` if:
+
+`(sim_k > sim + beta)  AND  (L_k - L < delta)`
+
+where:
+- `beta` controls the minimum required gain in gradient agreement
+- `delta` bounds the acceptable loss relaxation
+
+The selected perturbation biases early training toward regions of higher inter-client consensus.
+
+---
+
+### 2️⃣ Sign-Agreement Dampening (Per-Parameter Filtering)
+
+**Objective:**  
+Suppress parameter updates that exhibit high directional conflict across clients.
+
+For each parameter index `j`, compute the sign-agreement score:
+
+`W_j = | sum_{i=1..N} sign(g_i)_j | / N`
+
+where:
+- `g_i` is the gradient from client `i`
+- `sign(g_i)_j ∈ {+1, -1}` is the sign of the gradient for parameter `j`
+- `N` is the number of participating clients
+
+`W_j` lies in `[0, 1]`:
+- `W_j ≈ 1` → strong inter-client agreement
+- `W_j ≈ 0` → strong directional conflict
+
+**Agreement-weighted update:**
+
+`theta_new = theta_old - eta * (g_avg ⊙ W)`
+
+where:
+- `g_avg` is the element-wise averaged client gradient
+- `W` is the vector of agreement scores `{W_j}`
+- `⊙` denotes element-wise multiplication
+- `eta` is the global learning rate
+
+This step dampens updates for parameters with conflicting gradients while preserving consensus-driven updates.
+
+---
+
+### 3️⃣ Sign-Disagreement Pruning (Late-Stage Filtering)
+
+**Objective:**  
+Permanently remove parameters that exhibit persistent disagreement late in training.
+
+During the pruning window (final rounds), parameters are evaluated using their agreement scores.
+
+**Pruning rule:**
+
+For parameter `j`:
+
+`if W_j < t_p  →  theta_j <- 0`
+
+where:
+- `t_p` is a pruning threshold (e.g., 0.2–0.3)
+
+This permanently zeroes parameters that consistently encode conflicting signals across clients, resulting in a filtered global model that prioritizes invariant, agreement-based features.
+
+---
+
+### 🔑 Key Intuition
+
+- **Gradient agreement ≈ signal**  
+- **Gradient conflict ≈ spurious correlation**
+
+FedPACE operationalizes this intuition by:
+1. Steering early optimization toward agreement (Annealing)
+2. Soft-suppressing conflict during training (Dampening)
+3. Hard-removing persistent conflict at convergence (Pruning)
+
+The result is a federated model that is **more stable, reproducible, and robust under non-IID and domain-shifted settings**.
 
 ## Repository Structure
 
