@@ -102,8 +102,6 @@ The research work and detailed metrics are documented in our [📄 Research Pape
 **A unified 3-stage framework for robust federated learning under client heterogeneity**  
 _Privileged to the idea that prioritizing gradient agreement filters spurious features and improves aggregation in non-IID FL._
 
-> Repository & full technical writeup: `src/docs/Technical_Research_Report.pdf` (see `docs/`)
-
 ---
 
 ## TL;DR / Abstract
