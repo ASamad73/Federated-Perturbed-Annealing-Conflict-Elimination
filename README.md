@@ -104,18 +104,18 @@ _Privileged to the idea that prioritizing gradient agreement filters spurious fe
 
 ---
 
-## TL;DR / Abstract
+## 🧩 TL;DR / Abstract
 
 FedPACE is a research framework and implementation that addresses **client divergence** in federated learning (FL). We hypothesize that **directional disagreement in client gradients** signals spurious, client-specific features, while **agreement** signals invariant features useful for the global model. FedPACE is a three-stage pipeline that (1) biases early optimization toward agreement via a federated variant of Gradient-Guided Annealing (Fed-GGA), (2) dampens updates per-parameter based on sign-agreement, and (3) prunes persistently conflicting parameters late in training. In CIFAR-10 (Dirichlet, `α=0.1`) and PACS (leave-one-domain-out) benchmarks we show consistent gains over Fed-GGA and FedAvg (CIFAR-10: **+2.5%** accuracy; PACS: **+3.89%** accuracy) while providing interpretable diagnostics about agreement vs. specialization.
 
 ---
 
-## Table of contents
+## 📑 Table of contents
 
 - [Motivation & Core Idea](#motivation--core-idea)  
 - [What’s new / Contributions](#whats-new--contributions)  
 - [Method overview (math & algorithm)](#method-overview-math--algorithm)  
-- [Repository Structure](#--repository-structure)  
+- [Repository Structure and Implementation Details](#--repository-structure--implementation-details)  
 - [Experimental setup & hyperparameters](#experimental-setup--hyperparameters)  
 - [Key quantitative results & ablations](#key-quantitative-results--ablations)  
 - [Interpretation & insights](#interpretation--insights)  
@@ -123,7 +123,7 @@ FedPACE is a research framework and implementation that addresses **client diver
 
 ---
 
-## Motivation & core idea
+## 💡 Motivation & core idea
 
 Federated learning aggregates client updates to learn a global model, but **non-IID client data** causes client updates to point in conflicting directions (client divergence). When aggregated naively this reduces final model quality. Our central hypothesis:
 
@@ -139,7 +139,7 @@ This pipeline aims to *preserve beneficial client specialization* while filterin
 
 ---
 
-## What’s new / contributions
+## ✨ What’s new / contributions
 
 - **FedPACE pipeline**: unified 3-stage approach (Annealing → Dampening → Pruning) that is lightweight and compatible with standard FL loops.  
 - **Federated GGA variant**: implement a federated adaptation of Gradient-Guided Annealing with loss-relaxed perturbation search.  
@@ -255,7 +255,9 @@ FedPACE operationalizes this intuition by:
 
 The result is a federated model that is **more stable, reproducible, and robust under non-IID and domain-shifted settings**.
 
-## Repository Structure
+---
+
+## 📂 Repository Structure and Implementation Details 🛠️
 
 ```text
 ├── src/                        # Core FedPACE Library
@@ -272,8 +274,6 @@ The result is a federated model that is **more stable, reproducible, and robust 
 └── README.md                   # Project documentation
 ```
 
----
-
 Important implementation choices (as in paper):
 - Model: custom **3-layer CNN** (Conv32 → Conv64 → Conv128 → pool → linear) for computational feasibility.  
 - Optimizer: **Adam** with lr = 1e-3, weight_decay = 1e-4 (dampening phase uses lr increased to 0.01 to compensate).  
@@ -284,7 +284,7 @@ Important implementation choices (as in paper):
 
 ---
 
-## Experimental setup & hyperparameters (concise)
+## ⚙️ Experimental setup & hyperparameters (concise)
 
 **Datasets**
 - CIFAR-10 (60k images, 10 classes) — Dirichlet partition \( \alpha=0.1 \), N=3 clients  
@@ -304,7 +304,7 @@ See the report (`docs/Technical_Research_Report.pdf`) for all ablation plots (Fi
 
 ---
 
-## Key quantitative results
+## 📊 Key quantitative results
 
 **CIFAR-10 (Dirichlet, α=0.1)** — averaged over 3 seeds (0,1,2), 50 rounds:
 - **FedGGA (baseline)** final accuracy (avg) ≈ **36.13%**  
@@ -324,7 +324,7 @@ See the report (`docs/Technical_Research_Report.pdf`) for all ablation plots (Fi
 
 ---
 
-## Interpretation & practical insights
+## 🔍 Interpretation & practical insights
 
 - **Agreement ≠ naive similarity regularization.** FedPACE uses agreement as a *selective amplifier* rather than forcing agreement. Lowered overall similarity can coexist with higher global accuracy because FedPACE suppresses harmful directions while allowing productive specialization.  
 - **Annealing helps find better regions early**, but without dampening, large local updates can dominate; dampening stabilizes mid/late training. Pruning removes persistent noise. Together they form a complementary sequence.  
@@ -333,7 +333,7 @@ See the report (`docs/Technical_Research_Report.pdf`) for all ablation plots (Fi
 
 ---
 
-## Limitations & future work
+## 🚧 Limitations & future work
 
 **Limitations**
 - Experiments use a small 3-layer CNN and a tiny number of clients (N=3) for computational feasibility — need larger-scale validation.  
