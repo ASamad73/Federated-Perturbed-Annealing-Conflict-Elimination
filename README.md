@@ -84,7 +84,7 @@ FedPACE demonstrates consistent improvements over the **Fed-GGA** baseline and s
 ---
 
 ## 🤝 Team Roles & Contributions
-* **Abdul Samad:** Lead for FedPACE formulation (see detailed [My Contributions] section).
+* **Abdul Samad:** Lead for FedPACE formulation. (See detailed [My Contributions] section above).
 * **Muhammad Hamza Habib:** Contribution to dampening logic, assisted in visualization of PACS results, and technical report synthesis.
 * **Rumaan Mujtaba:** Contribution to pruning logic and visualization of gradient similarities.
 
