@@ -117,13 +117,11 @@ FedPACE is a research framework and implementation that addresses **client diver
 - [Motivation & Core Idea](#motivation--core-idea)  
 - [What’s new / Contributions](#whats-new--contributions)  
 - [Method overview (math & algorithm)](#method-overview-math--algorithm)  
-- [Implementation notes & repository layout](#implementation-notes--repository-layout)  
+- [Repository Structure](#--repository-structure)  
 - [Experimental setup & hyperparameters](#experimental-setup--hyperparameters)  
 - [Key quantitative results & ablations](#key-quantitative-results--ablations)  
 - [Interpretation & insights](#interpretation--insights)  
 - [Limitations & suggested follow-ups](#limitations--suggested-follow-ups)  
-- [How to run / reproduce (examples)](#how-to-run--reproduce-examples)  
-- [Citation & contact](#citation--contact)
 
 ---
 
@@ -169,7 +167,7 @@ This pipeline aims to *preserve beneficial client specialization* while filterin
 - \(\eta\): global learning rate
 
 ### 1) Federated Gradient-Guided Annealing (Fed-GGA) — sampling & selection
-At rounds \(r \in [R_s, R_e]\) the server samples \(K\) small perturbations \(\Delta_k \sim U(-\rho,\rho)\) and evaluates the resulting client gradient cosine similarity and loss. The selected perturbation must meet both a similarity gain and loss-relaxation constraint:
+At rounds \(r \in [R_s, R_e]\), the server samples \(K\) small perturbations \(\Delta_k \sim U(-\rho,\rho)\) and evaluates the resulting client gradient cosine similarity and loss. The selected perturbation must meet both a similarity gain and loss-relaxation constraint:
 
 Select perturbation \(k\) if
 \[
@@ -177,7 +175,7 @@ Select perturbation \(k\) if
 \]
 where `sim` is baseline average cosine similarity and \(L\) is baseline loss. This biases early optimization toward parameter neighborhoods with higher alignment.
 
-(See **Algorithm 1** in the paper for the full loop.)
+(See **Algorithm 1** in the [Research Paper](./docs/Technical_Research_Report.pdf) for the full loop.)
 
 ### 2) Sign-Agreement dampening — per-parameter score
 Compute the element-wise agreement score using gradient **signs**:
@@ -197,7 +195,7 @@ In final rounds (pruning window), any parameter \(j\) with sustained agreement \
 \]
 This permanently removes parameters that consistently conflict.
 
-## 📂 Repository Structure
+## Repository Structure
 
 ```text
 ├── src/                        # Core FedPACE Library
@@ -289,4 +287,13 @@ See the report (`docs/Technical_Research_Report.pdf`) for all ablation plots (Fi
 - Theoretical analysis of convergence guarantees and whether dampening/pruning preserve important optimization properties.
 
 ---
+
+## 📄 Reference
+
+The research work and detailed metrics are documented in our [📄 Research Paper](./docs/Technical_Project_Report.pdf).
+
+---
+
+⭐️ If you find this research useful, please consider giving the repository a star!
+
 
