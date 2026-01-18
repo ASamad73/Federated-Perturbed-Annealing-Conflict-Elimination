@@ -257,7 +257,7 @@ The result is a federated model that is **more stable, reproducible, and robust 
 
 ---
 
-## 📂 Repository Structure and Implementation Details 🛠️
+## 📂 Repository Structure & Implementation Details 🛠️
 
 ```text
 ├── src/                        # Core FedPACE Library
