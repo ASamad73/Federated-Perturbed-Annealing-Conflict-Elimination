@@ -163,8 +163,6 @@ Overall training schedule:
 
 FedAvg rounds → Annealing → FedAvg rounds → Dampening → Pruning
 
----
-
 ### 1️⃣ Federated Gradient-Guided Annealing (Fed-GGA)
 
 **Objective:**  
@@ -195,8 +193,6 @@ where:
 
 The selected perturbation biases early training toward regions of higher inter-client consensus.
 
----
-
 ### 2️⃣ Sign-Agreement Dampening (Per-Parameter Filtering)
 
 **Objective:**  
@@ -226,8 +222,6 @@ where:
 - `eta` is the global learning rate
 
 This step dampens updates for parameters with conflicting gradients while preserving consensus-driven updates.
-
----
 
 ### 3️⃣ Sign-Disagreement Pruning (Late-Stage Filtering)
 
