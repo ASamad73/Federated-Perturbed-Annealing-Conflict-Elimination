@@ -1,6 +1,6 @@
-<h1 align="center">
+<!-- <h1 align="center">
   🌐 FedPACE: Federated Perturbed Annealing and <br> Conflict Elimination 🧬
-</h1>
+</h1> -->
 
 <!-- <p align="center">
   <b>A Unified 3-Stage Framework for Robust Federated Learning under Data Heterogeneity</b><br>
@@ -97,7 +97,9 @@ The research work and detailed metrics are documented in our [📄 Research Pape
 ---
 
 ⭐️ If you find this research useful, please consider giving the repository a star! -->
-
+<h1 align="center">
+  🌐 FedPACE: Federated Perturbed Annealing and <br> Conflict Elimination 🧬
+</h1>
 
 **A unified 3-stage framework for robust federated learning under client heterogeneity**  
 _Privileged to the idea that prioritizing gradient agreement filters spurious features and improves aggregation in non-IID FL._
@@ -114,12 +116,13 @@ FedPACE is a research framework and implementation that addresses **client diver
 
 - [Motivation & Core Idea](#motivation--core-idea)  
 - [What’s new / Contributions](#whats-new--contributions)  
-- [Method overview (math & algorithm)](#method-overview-math--algorithm)  
-- [Repository Structure and Implementation Details](#--repository-structure--implementation-details)  
-- [Experimental setup & hyperparameters](#experimental-setup--hyperparameters)  
-- [Key quantitative results & ablations](#key-quantitative-results--ablations)  
-- [Interpretation & insights](#interpretation--insights)  
-- [Limitations & suggested follow-ups](#limitations--suggested-follow-ups)  
+- [Method Overview — Formulas & Algorithm](#method-overview--formulas--algorithm)  
+- [Repository Structure & Implementation Details](#repository-structure--implementation-details)  
+- [Reproducing Results & Visualization](#reproducing-results--visualization)
+- [Experimental setup & hyperparameters](#experimental-setup--hyperparameters-concise)  
+- [Key quantitative results & ablations](#key-quantitative-results)  
+- [Interpretation & insights](#interpretation--practical-insights)  
+- [Limitations & suggested follow-ups](#limitations--future-work)
 
 ---
 
@@ -281,6 +284,28 @@ Important implementation choices (as in paper):
 - Typical federated setup: \(N=3\) clients (compute constrained experiments); Dirichlet concentration \(\alpha=0.1\) for CIFAR non-IID.  
 - Annealing: \(K=8\) perturbations, perturbation scale \(\rho=1\mathrm{e}{-5}\), loss relaxation \(\delta=0.05\), similarity relaxation \(\beta=0.3\).  
 - Pruning hyperparams: \(t_p=0.2\), \(e_p=1\) (pruning epochs).
+
+---
+
+## 📈 Reproducing Results & Visualization 📊
+
+To ensure the research is fully transparent and reproducible, we provide a dedicated pipeline to regenerate the quantitative figures and metrics reported in our [Technical Report](./docs/Technical_Research_Report.pdf).
+
+### 1. Execute Experiments
+First, run the training orchestration via `main.py`. This generates detailed `.csv` runlogs containing per-round accuracy, loss, and inter-client gradient similarity data.
+
+```bash
+# Example command for CIFAR-10 (Dirichlet α=0.1)
+python main.py --dataset cifar --alpha 0.1 --save_dir ./results/fed_pace
+```
+
+### 2. Generate Figures
+Once the experiments are complete and the runlogs are saved in your `--save_dir`, use the visualization script to generate the performance curves.
+
+```bash
+# Generate the Accuracy vs. Gradient Similarity plots
+python scripts/generate.py --log ./results/fed_pace/runlog_cifar_alpha0.1_seed0.csv --out ./results/plots/cifar_performance.png
+```
 
 ---
 
