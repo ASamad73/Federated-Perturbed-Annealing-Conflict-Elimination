@@ -279,6 +279,8 @@ The result is a federated model that is **more stable, reproducible, and robust 
 │   ├── strategies.py           # Logic for Conflict Dampening & Sign-based Pruning
 │   ├── annealing.py            # GGA implementation & Perturbation utilities
 │   └── utils.py                # Reproducibility math, metrics, & logging helpers
+├── scripts/
+│   └── generate.py             # Script to product results and visualize figures
 ├── docs/                       # Project Documentation
 │   └── Technical_Research_Report.pdf  # Full research paper & mathematical derivations
 ├── main.py                     # Entry point (Unified orchestration of experiments)
