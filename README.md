@@ -97,6 +97,7 @@ The research work and detailed metrics are documented in our [📄 Research Pape
 ---
 
 ⭐️ If you find this research useful, please consider giving the repository a star! -->
+
 <h1 align="center">
   🌐 FedPACE: Federated Perturbed Annealing and <br> Conflict Elimination 🧬
 </h1>
@@ -114,18 +115,21 @@ FedPACE is a research framework and implementation that addresses **client diver
 
 ## 📑 Table of contents
 
-- [Motivation & Core Idea](#motivation--core-idea)  
+- [Motivation & Core Idea](#motivation-core-idea)  
 - [What’s new / Contributions](#whats-new--contributions)  
-- [Method Overview — Formulas & Algorithm](#method-overview--formulas--algorithm)  
+- [Method Overview — Formulas & Algorithm](#method-overview---formulas--algorithm)  
+- [Key Intuition](#key-intuition)
 - [Repository Structure & Implementation Details](#repository-structure--implementation-details)  
-- [Reproducing Results & Visualization](#reproducing-results--visualization)
-- [Experimental setup & hyperparameters](#experimental-setup--hyperparameters-concise)  
-- [Key quantitative results & ablations](#key-quantitative-results)  
-- [Interpretation & insights](#interpretation--practical-insights)  
-- [Limitations & suggested follow-ups](#limitations--future-work)
+- [Reproducing Results & Visualization](#reproducing-results--visualization)  
+- [Experimental setup & hyperparameters (concise)](#experimental-setup--hyperparameters-concise)  
+- [Key quantitative results](#key-quantitative-results)  
+- [Interpretation & practical insights](#interpretation--practical-insights)  
+- [Limitations & future work](#limitations--future-work)  
+- [Reference](#reference)
 
 ---
 
+<a id="motivation-core-idea"></a>
 ## 💡 Motivation & core idea
 
 Federated learning aggregates client updates to learn a global model, but **non-IID client data** causes client updates to point in conflicting directions (client divergence). When aggregated naively this reduces final model quality. Our central hypothesis:
@@ -142,6 +146,7 @@ This pipeline aims to *preserve beneficial client specialization* while filterin
 
 ---
 
+<a id="whats-new--contributions"></a>
 ## ✨ What’s new / contributions
 
 - **FedPACE pipeline**: unified 3-stage approach (Annealing → Dampening → Pruning) that is lightweight and compatible with standard FL loops.  
@@ -158,6 +163,7 @@ This pipeline aims to *preserve beneficial client specialization* while filterin
 
 ---
 
+<a id="whats-new--contributions"></a>
 ## 🧠 Method Overview — Formulas & Algorithm
 
 FedPACE is a **three-stage federated optimization pipeline** designed to bias learning toward *inter-client agreement* and suppress parameters that consistently encode spurious, domain-specific features. The method operates over a fixed training horizon and transitions through annealing, dampening, and pruning phases.
@@ -246,6 +252,7 @@ This permanently zeroes parameters that consistently encode conflicting signals 
 
 ---
 
+<a id="key-intuition"></a>
 ### 🔑 Key Intuition
 
 - **Gradient agreement ≈ signal**  
@@ -260,6 +267,7 @@ The result is a federated model that is **more stable, reproducible, and robust 
 
 ---
 
+<a id="repository-structure--implementation-details"></a>
 ## 📂 Repository Structure & Implementation Details 🛠️
 
 ```text
@@ -287,6 +295,7 @@ Important implementation choices (as in paper):
 
 ---
 
+<a id="reproducing-results--visualization"></a>
 ## 📈 Reproducing Results & Visualization 📊
 
 To ensure the research is fully transparent and reproducible, we provide a dedicated pipeline to regenerate the quantitative figures and metrics reported in our [Technical Report](./docs/Technical_Research_Report.pdf).
@@ -309,6 +318,7 @@ python scripts/generate.py --log ./results/fed_pace/runlog_cifar_alpha0.1_seed0.
 
 ---
 
+<a id="experimental-setup--hyperparameters-concise"></a>
 ## ⚙️ Experimental setup & hyperparameters (concise)
 
 **Datasets**
@@ -329,6 +339,7 @@ See the report (`docs/Technical_Research_Report.pdf`) for all ablation plots (Fi
 
 ---
 
+<a id="key-quantitative-results"></a>
 ## 📊 Key quantitative results
 
 **CIFAR-10 (Dirichlet, α=0.1)** — averaged over 3 seeds (0,1,2), 50 rounds:
@@ -349,6 +360,7 @@ See the report (`docs/Technical_Research_Report.pdf`) for all ablation plots (Fi
 
 ---
 
+<a id="interpretation--practical-insights"></a>
 ## 🔍 Interpretation & practical insights
 
 - **Agreement ≠ naive similarity regularization.** FedPACE uses agreement as a *selective amplifier* rather than forcing agreement. Lowered overall similarity can coexist with higher global accuracy because FedPACE suppresses harmful directions while allowing productive specialization.  
@@ -358,6 +370,7 @@ See the report (`docs/Technical_Research_Report.pdf`) for all ablation plots (Fi
 
 ---
 
+<a id="limitations--future-work"></a>
 ## 🚧 Limitations & future work
 
 **Limitations**
@@ -373,6 +386,7 @@ See the report (`docs/Technical_Research_Report.pdf`) for all ablation plots (Fi
 
 ---
 
+<a id="reference"></a>
 ## 📄 Reference
 
 The research work and detailed metrics are documented in our [📄 Research Paper](./docs/Technical_Project_Report.pdf).
