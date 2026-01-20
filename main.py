@@ -121,6 +121,11 @@ def main():
             server = FedGGAServer(model, clients, device, cfg, test_loader=held_test_loader)
             run_log = server.run()
 
+            log_name = f"runlog_pacs_{held_out}_seed{args.seed}.csv"
+            log_path = os.path.join(args.save_dir, log_name)
+            if isinstance(run_log, pd.DataFrame):
+                run_log.to_csv(log_path, index=False)
+
             held_client = FedClient(held_out, None, held_test_loader, device)
             acc = held_client.eval_on_test(server.model)
             
@@ -139,6 +144,12 @@ def main():
         model = SmallCNN(num_classes=10).to(device)
         server = FedGGAServer(model, clients, device, cfg, test_loader=test_loader)
         run_log = server.run()
+
+        log_name = f"runlog_cifar_alpha{args.alpha}_seed{args.seed}.csv"
+        log_path = os.path.join(args.save_dir, log_name)
+        if isinstance(run_log, pd.DataFrame):
+            run_log.to_csv(log_path, index=False)
+            print(f"Saved detailed run log to: {log_path}")
         
         acc = eval_global_on_test(server.model, test_loader, device) # Using your existing helper
         results.append({'held_out': 'N/A', 'acc': acc, 'dataset': 'CIFAR10'})
@@ -151,4 +162,5 @@ def main():
         print(f"Average PACS Accuracy: {df['acc'].mean():.4f}")
 
 if __name__ == "__main__":
+
     main()
